@@ -1,14 +1,13 @@
 package com.example.inventory_pro.produto;
 
-import com.example.inventory_pro.produto.dtos.ProdutoCreateDTO;
-import com.example.inventory_pro.produto.dtos.ProdutoResponseDTO;
-import com.example.inventory_pro.produto.dtos.ProdutoUpdateDTO;
+import com.example.inventory_pro.exceptions.ConflictException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,30 +34,28 @@ public class Produto {
   String descricao;
 
   @Column(nullable = false)
+  @Min(1)
   int valor;
 
   @Column(nullable = false)
-  int quantidade;
+  @Min(1)
+  Integer quantidade;
 
-  public Produto(ProdutoCreateDTO produtoCreateDTO) {
-    this.nome = produtoCreateDTO.getNome();
-    this.descricao = produtoCreateDTO.getDescricao();
-    this.valor = produtoCreateDTO.getValor();
-    this.quantidade = produtoCreateDTO.getQuantidade();
+  public void update(String nome, String descricao, Integer valor, Integer quantidade) {
+    if (nome != null)
+      this.nome = nome;
+    if (descricao != null)
+      this.descricao = descricao;
+    if (valor != null)
+      this.valor = valor;
+    if (quantidade != null)
+      this.quantidade = quantidade;
   }
 
-  public Produto(ProdutoResponseDTO produtoResponseDTO) {
-    this.id = produtoResponseDTO.getId();
-    this.nome = produtoResponseDTO.getNome();
-    this.descricao = produtoResponseDTO.getDescricao();
-    this.valor = produtoResponseDTO.getValor();
-    this.quantidade = produtoResponseDTO.getQuantidade();
-  }
-
-  public Produto(ProdutoUpdateDTO produtoUpdateDTO) {
-    this.nome = produtoUpdateDTO.getNome();
-    this.descricao = produtoUpdateDTO.getDescricao();
-    this.valor = produtoUpdateDTO.getValor();
-    this.quantidade = produtoUpdateDTO.getQuantidade();
+  public void setQuantidade(Integer quantidade) {
+    if (quantidade == null || quantidade < 0) {
+      throw new ConflictException("Quantidade não pode ser negativa");
+    }
+    this.quantidade = quantidade;
   }
 }

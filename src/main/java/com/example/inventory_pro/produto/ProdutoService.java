@@ -21,8 +21,16 @@ public class ProdutoService {
     return produtos.stream().map(ProdutoResponseDTO::new).toList();
   }
 
-  public ProdutoResponseDTO createProduto(ProdutoCreateDTO produtoCreateDTO) {
-    Produto produto = produtoRepository.save(new Produto(produtoCreateDTO));
+  public ProdutoResponseDTO createProduto(ProdutoCreateDTO dto) {
+    Produto produto = Produto.builder()
+        .nome(dto.getNome())
+        .descricao(dto.getDescricao())
+        .valor(dto.getValor())
+        .quantidade(dto.getQuantidade())
+        .build();
+
+    produtoRepository.save(produto);
+
     return new ProdutoResponseDTO(produto);
   }
 
@@ -31,25 +39,29 @@ public class ProdutoService {
         .orElseThrow(() -> new NotFoundException("Produto id:" + id + " não encontrado"));
   }
 
-  public ProdutoResponseDTO updateProduto(Long id, ProdutoUpdateDTO produtoUpdateDTO) {
+  public ProdutoResponseDTO updateProduto(Long id, ProdutoUpdateDTO dto) {
     Produto produto = getProdutoById(id);
 
-    if (produtoUpdateDTO.getNome() != null)
-      produto.setNome(produtoUpdateDTO.getNome());
+    produto.update(
+        dto.getNome(),
+        dto.getDescricao(),
+        dto.getValor(),
+        dto.getQuantidade());
 
-    if (produtoUpdateDTO.getDescricao() != null)
-      produto.setDescricao(produtoUpdateDTO.getDescricao());
+    produtoRepository.save(produto);
 
-    if (produtoUpdateDTO.getValor() != null)
-      produto.setValor(produtoUpdateDTO.getValor());
+    return new ProdutoResponseDTO(produto);
+  }
 
-    return new ProdutoResponseDTO(produtoRepository.save(produto));
-
+  public Produto updateQuantidade(Long id, Integer quantidade) {
+    Produto produto = getProdutoById(id);
+    produto.setQuantidade(produto.getQuantidade() - quantidade);
+    produtoRepository.save(produto);
+    return produto;
   }
 
   public void deleteProduto(Long id) {
     getProdutoById(id);
     produtoRepository.deleteById(id);
   }
-
 }
