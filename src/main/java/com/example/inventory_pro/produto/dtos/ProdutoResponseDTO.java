@@ -3,6 +3,7 @@ package com.example.inventory_pro.produto.dtos;
 import com.example.inventory_pro.produto.Produto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Locale;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProdutoResponseDTO {
   Long id;
   String nome;

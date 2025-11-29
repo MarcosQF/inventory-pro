@@ -4,12 +4,14 @@ import com.example.inventory_pro.produto.Produto;
 
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProdutoUpdateDTO {
 
   private String nome;
