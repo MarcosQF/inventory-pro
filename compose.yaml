@@ -15,5 +15,14 @@ services:
       timeout: 5s
       retries: 5
 
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+
 volumes:
   estoque_data:
+
