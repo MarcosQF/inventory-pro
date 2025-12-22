@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/venda")
+@RequestMapping("/api/vendas")
 @RequiredArgsConstructor
 @Tag(name = "Venda")
 public class VendaController {
@@ -28,7 +28,7 @@ public class VendaController {
         .body(vendaService.criarVenda(dto));
   }
 
-  @GetMapping
+  @GetMapping("/")
   public ResponseEntity<List<VendaResponseDTO>> listarVendas() {
     return ResponseEntity.ok(vendaService.listarVendas());
   }
