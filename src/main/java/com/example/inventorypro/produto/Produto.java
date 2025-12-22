@@ -38,7 +38,7 @@ public class Produto {
   int valor;
 
   @Column(nullable = false)
-  @Min(1)
+  @Min(0)
   Integer quantidade;
 
   public void update(String nome, String descricao, Integer valor, Integer quantidade) {

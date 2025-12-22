@@ -2,7 +2,6 @@ package com.example.inventorypro.produto.dtos;
 
 import com.example.inventorypro.produto.Produto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,16 +15,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProdutoCreateDTO {
 
-  @Valid
-
   @NotNull
   String nome;
 
   @NotNull
   String descricao;
 
-  @NotNull
-  int valor;
+  @Min(1)
+  private Integer valor;
 
   @NotNull
   @Min(1)
