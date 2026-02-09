@@ -25,7 +25,7 @@ import com.example.inventorypro.infra.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = ProdutoController.class)
-@AutoConfigureMockMvc(addFilters = false) // DESATIVA TODOS OS FILTROS DE SEGURANÇA NO TESTE
+@AutoConfigureMockMvc(addFilters = false)
 class ProdutoControllerTest {
 
   @Autowired
