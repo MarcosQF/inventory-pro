@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.inventorypro.produto.dtos.ProdutoCreateDTO;
@@ -20,6 +22,7 @@ import com.example.inventorypro.produto.dtos.ProdutoUpdateDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(ProdutoController.class)
+@WithMockUser
 class ProdutoControllerTest {
 
   @Autowired
@@ -33,7 +36,6 @@ class ProdutoControllerTest {
 
   @Test
   void mustCreateProduto() throws Exception {
-
     ProdutoCreateDTO createDTO = ProdutoCreateDTO.builder()
         .nome("Mouse Gamer")
         .descricao("RGB")
@@ -52,6 +54,7 @@ class ProdutoControllerTest {
     when(produtoService.createProduto(createDTO)).thenReturn(responseDTO);
 
     mockMvc.perform(post("/api/produtos/")
+        .with(csrf())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(createDTO)))
         .andExpect(status().isCreated())
@@ -61,7 +64,6 @@ class ProdutoControllerTest {
 
   @Test
   void mustListAllProdutos() throws Exception {
-
     ProdutoResponseDTO produto = ProdutoResponseDTO.builder()
         .id(1L)
         .nome("Teclado")
@@ -79,16 +81,15 @@ class ProdutoControllerTest {
 
   @Test
   void mustDeleteProduto() throws Exception {
-
     doNothing().when(produtoService).deleteProduto(1L);
 
-    mockMvc.perform(delete("/api/produtos/1"))
+    mockMvc.perform(delete("/api/produtos/1")
+        .with(csrf())) // Required for DELETE
         .andExpect(status().isNoContent());
   }
 
   @Test
   void mustUpdateProduto() throws Exception {
-
     ProdutoUpdateDTO updateDTO = ProdutoUpdateDTO.builder()
         .nome("Teclado Novo")
         .descricao("Switch Red")
@@ -107,6 +108,7 @@ class ProdutoControllerTest {
     when(produtoService.updateProduto(1L, updateDTO)).thenReturn(responseDTO);
 
     mockMvc.perform(patch("/api/produtos/1")
+        .with(csrf())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(updateDTO)))
         .andExpect(status().isOk())

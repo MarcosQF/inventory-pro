@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.inventorypro.venda.dtos.VendaCreateDTO;
 import com.example.inventorypro.venda.dtos.VendaResponseDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/vendas")
 @RequiredArgsConstructor
 @Tag(name = "Venda")
+@SecurityRequirement(name = "bearer-key")
 public class VendaController {
 
   private final VendaService vendaService;

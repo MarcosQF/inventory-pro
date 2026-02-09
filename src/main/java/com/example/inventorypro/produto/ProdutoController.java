@@ -18,12 +18,14 @@ import com.example.inventorypro.produto.dtos.ProdutoCreateDTO;
 import com.example.inventorypro.produto.dtos.ProdutoResponseDTO;
 import com.example.inventorypro.produto.dtos.ProdutoUpdateDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/produtos")
 @Tag(name = "Produto")
+@SecurityRequirement(name = "bearer-key")
 public class ProdutoController {
 
   @Autowired
